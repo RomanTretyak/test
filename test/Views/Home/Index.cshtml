@@ -1,0 +1,66 @@
+﻿@model PagedList.IPagedList<test.Models.CurrentUserTaskModel>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<hr />
+
+<p>
+    <input type="button" value="Выбрать новую задачу" class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Home")'" />
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Дата", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Задача", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Время", "Index", new { sortOrder = ViewBag.TimeSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th data-field="description">Описание</th>
+            <th>
+                @Html.ActionLink("Статус", "Index", new { sortOrder = ViewBag.StatusSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Task)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StatusName)
+                    </td>
+                    <td>
+                        <input type="button" value="Редактировать" class="btn btn-default"
+                               onclick="location.href='@Url.Action("Edit", "Home", new { id = item.Id })'" />
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<br />
+Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) с @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

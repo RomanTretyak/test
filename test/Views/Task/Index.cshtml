@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DataModels.Task>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table table-hover" data-sort-name="name" data-sort-order="desc">
+    <thead>
+        <tr>
+            <th data-field="name" data-sortable="true">Название задачи</th>
+            <th data-field="description">Описание</th>
+            <th data-field="project">Проект</th>
+            <th data-field="status">Статус</th>
+            <th data-field="users">Пользователи</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (DataModels.Task item in ViewBag.Task)
+            {
+                <tr>
+                    <td>@item.TaskName</td>
+                    <td>@item.Description</td>
+                    <td>@item.Project.Name</td>
+                    <td>@item.Status.Name</td>
+                    <td>@item.UserId</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
